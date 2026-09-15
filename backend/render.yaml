@@ -1,0 +1,22 @@
+databases:
+  - name: job-queue-db
+    plan: free
+    databaseName: job_queue
+    user: job_queue
+
+services:
+  - type: web
+    name: job-queue-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /jobs
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: job-queue-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        sync: false

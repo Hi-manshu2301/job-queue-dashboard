@@ -1,0 +1,261 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.app-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+}
+
+.subtitle {
+  margin: 0 0 24px;
+  color: #555;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e4e8;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 1.1rem;
+}
+
+/* --- form --- */
+.job-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.job-form input {
+  flex: 1 1 200px;
+  padding: 9px 12px;
+  border: 1px solid #ccced4;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.job-form button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.job-form button:disabled {
+  background: #9db6ea;
+  cursor: not-allowed;
+}
+
+/* --- error banner --- */
+.error-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #fdecea;
+  border: 1px solid #f5c2bc;
+  color: #8a2317;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.error-banner button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* --- filter bar --- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #d7d9de;
+  background: #f8f9fb;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.filter-chip.active {
+  border-color: #2563eb;
+  background: #eaf1ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.filter-chip-count {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  padding: 0 7px;
+  font-size: 0.78rem;
+}
+
+/* --- status badges --- */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #7a5b00;
+}
+
+.status-running {
+  background: #cfe8ff;
+  color: #084c8d;
+}
+
+.status-completed {
+  background: #d7f5df;
+  color: #146c2e;
+}
+
+.status-failed {
+  background: #fbd9d9;
+  color: #9b1c1c;
+}
+
+/* --- table --- */
+.job-table-wrapper {
+  overflow-x: auto;
+}
+
+.job-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.job-table th,
+.job-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #eceef1;
+  white-space: nowrap;
+}
+
+.job-table th {
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  white-space: normal;
+}
+
+.action-button {
+  border: 1px solid #d7d9de;
+  background: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button.danger {
+  color: #b91c1c;
+  border-color: #f0c4c4;
+}
+
+.action-button.status-running {
+  color: #084c8d;
+  border-color: #a9d3fb;
+}
+
+.action-button.status-completed {
+  color: #146c2e;
+  border-color: #a7e6b8;
+}
+
+.action-button.status-failed {
+  color: #9b1c1c;
+  border-color: #f3b8b8;
+}
+
+.empty-state,
+.loading-state {
+  color: #6b7280;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.app-footer {
+  margin-top: 12px;
+  color: #8a8f98;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .job-table thead {
+    display: none;
+  }
+
+  .job-table,
+  .job-table tbody,
+  .job-table tr,
+  .job-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .job-table tr {
+    border-bottom: 1px solid #eceef1;
+    padding: 10px 0;
+  }
+
+  .job-table td {
+    border-bottom: none;
+    padding: 3px 0;
+    white-space: normal;
+  }
+
+  .job-table td::before {
+    content: attr(data-label) ': ';
+    font-weight: 600;
+    color: #6b7280;
+  }
+}
