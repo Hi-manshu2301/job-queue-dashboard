@@ -1,9 +1,3 @@
-databases:
-  - name: job-queue-db
-    plan: free
-    databaseName: job_queue
-    user: job_queue
-
 services:
   - type: web
     name: job-queue-backend
@@ -14,9 +8,9 @@ services:
     startCommand: npm run start:prod
     healthCheckPath: /jobs
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: job-queue-db
-          property: connectionString
       - key: CORS_ORIGIN
         sync: false
+      # To switch to durable Postgres storage instead of the ephemeral
+      # SQLite file (see README "Deployment"), add a DATABASE_URL env var
+      # pointing at a Postgres instance - no code changes needed, the app
+      # already picks the driver based on whether this is set.

@@ -9,8 +9,10 @@ A small full-stack job queue management dashboard: **NestJS** API + **React** fr
 
 | | URL |
 |---|---|
-| Frontend | _filled in after deploy_ |
-| Backend API | _filled in after deploy_ |
+| Frontend | https://job-queue-dashboard-six.vercel.app |
+| Backend API | https://job-queue-backend-w4j9.onrender.com |
+
+> **Note on the live backend:** it runs on Render's free tier using the SQLite fallback (no `DATABASE_URL` configured) rather than a shared Postgres instance — see [Deployment](#deployment) for why. That means job data **resets whenever the instance restarts** (free instances also spin down after ~15 min idle, so the first request after a while may take a few seconds to wake it up, and the job list will be empty again). This only affects the free hosted demo; local dev persists to a real SQLite file on disk indefinitely, and pointing `DATABASE_URL` at any Postgres instance switches production to durable storage with no code changes.
 
 ## Table of contents
 
@@ -163,25 +165,30 @@ cd backend && npm test
 ## Deployment
 
 - **Frontend** → Vercel (static Vite build)
-- **Backend** → Render (Node web service) + Render PostgreSQL
+- **Backend** → Render (free Node web service)
 
-`backend/render.yaml` describes the Render web service + database as infrastructure-as-code (`DATABASE_URL` is wired automatically from the database to the web service).
+`backend/render.yaml` describes the Render web service as infrastructure-as-code. The live backend deliberately runs **without** `DATABASE_URL`, i.e. on the SQLite fallback rather than Postgres — this repo's Render account already had one (unrelated) free-tier Postgres database in use, and Render caps free accounts at one. Rather than share a database instance across two unrelated projects, the demo uses the ephemeral SQLite path and documents the trade-off above. Pointing `DATABASE_URL` at any Postgres connection string (Render, Supabase, Railway, etc.) switches production to durable storage with zero code changes — see `backend/src/app.module.ts`.
+
+Also note: the live backend's CORS is left at its default (`origin: '*'`, see `backend/src/main.ts`) rather than locked to the frontend's exact origin, because the Render CLI used to script this deployment only accepts `--env-var` at service **creation** time, not on `services update`. Setting `CORS_ORIGIN` to the frontend URL (via the Render dashboard, or by recreating the service with the flag below) would close that off — reasonable for a real deployment, not essential for this demo since the API has no auth/cookies for a wildcard origin to expose.
 
 To redeploy yourself:
 
 ```bash
-# Backend (Render)
+# Backend (Render) - SQLite fallback, as deployed here
 render services create --name job-queue-backend --type web_service \
   --repo <your-repo-url> --root-directory backend --runtime node \
   --build-command "npm install && npm run build" \
   --start-command "npm run start:prod" \
-  --env-var DATABASE_URL=<render-postgres-connection-string> \
   --env-var CORS_ORIGIN=<your-frontend-url> \
   --plan free --confirm
 
+# ...or with durable Postgres storage instead, add:
+#   --env-var DATABASE_URL=<postgres-connection-string>
+
 # Frontend (Vercel)
 cd frontend
-vercel --prod --yes -e VITE_API_URL=<your-backend-url>
+echo "VITE_API_URL=<your-backend-url>" > .env.production
+vercel --prod --yes
 ```
 
 ## Assumptions & trade-offs
